@@ -1,5 +1,6 @@
 package info.jemsit;
 
+import info.jemsit.chessFigure.ChessFigureImpl;
 import info.jemsit.chessFigure.figures.*;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -24,7 +25,7 @@ public class ApplicationStart extends Application {
         BorderPane pane = new BorderPane();
         placeAllBlackFigures();
         placeAllWhiteFigures();
-        pane.getChildren().addAll(tileGroup, premovefigureGroup, figureGroup);
+        pane.getChildren().addAll(tileGroup, figureGroup, premovefigureGroup);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Tile tile = new Tile((i + j) % 2 == 0, i, j);
@@ -39,18 +40,18 @@ public class ApplicationStart extends Application {
     }
 
 
-    public static boolean hasFigureAt(int x, int y) {
+    public static ChessFigureImpl hasFigureAt(int x, int y) {
         double targetX = x * ApplicationStart.TILE_SIZE;
         double targetY = y * ApplicationStart.TILE_SIZE;
 
-        for (Node node : ApplicationStart.figureGroup.getChildren()) {
-            if (node instanceof StackPane) {
-                if (node.getLayoutX() == targetX && node.getLayoutY() == targetY) {
-                    return true;
+        for (Node figure : ApplicationStart.figureGroup.getChildren()) {
+            if (figure instanceof ChessFigureImpl) {
+                if (figure.getLayoutX() == targetX && figure.getLayoutY() == targetY) {
+                    return (ChessFigureImpl) figure;
                 }
             }
         }
-        return false;
+        return null;
     }
 
     public static boolean hasPreMoveFigureAt(int x, int y) {

@@ -7,7 +7,6 @@ import info.jemsit.chessFigure.premove.PreMoveImpl;
 public class PawnPreMove extends PreMoveImpl {
 
     int[] pawnMoves = {1, -1};
-    boolean isWhite;
     boolean isFirstMove;
 
 
@@ -29,7 +28,7 @@ public class PawnPreMove extends PreMoveImpl {
         if (!isWhite) currentYCoordinate++;
         else  currentYCoordinate--;
 
-        if (isValidMove(currentXCoordinate, currentYCoordinate) && !ApplicationStart.hasFigureAt(currentXCoordinate, currentYCoordinate)) {
+        if (isValidMove(currentXCoordinate, currentYCoordinate) && ApplicationStart.hasFigureAt(currentXCoordinate, currentYCoordinate) == null) {
             ApplicationStart.premovefigureGroup.getChildren().add(
                     new PreMoveDot(currentXCoordinate, currentYCoordinate) // true,true → maybe premove flag
             );

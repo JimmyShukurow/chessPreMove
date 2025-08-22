@@ -34,6 +34,7 @@ public class PawnFigure extends ChessFigureImpl {
     public void handleMousePressed(MouseEvent mouseEvent) {
         mouseX = mouseEvent.getSceneX() - getLayoutX();
         mouseY = mouseEvent.getSceneY() - getLayoutY();
+        toFront();
         PreMoveFigure preMoveThread = new PreMoveFigure(this, isWhite, isFirstMove());
         preMoveThread.addPreMove();
     }

@@ -1,6 +1,7 @@
 package info.jemsit.chessFigure.premove.figures;
 
 import info.jemsit.ApplicationStart;
+import info.jemsit.chessFigure.ChessFigureImpl;
 import info.jemsit.chessFigure.premove.PreMoveDot;
 import info.jemsit.chessFigure.premove.PreMoveImpl;
 
@@ -11,9 +12,10 @@ public class BishopPreMove extends PreMoveImpl {
     int[] bishopXMoves = {1, 1, -1, -1};
     int[] bishopYMoves = {1, -1, 1, -1};
 
-    public BishopPreMove(int currentXCoordinate, int currentYCoordinate) {
+    public BishopPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite) {
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;
+        this.isWhite = isWhite;
     }
 
     @Override
@@ -27,7 +29,15 @@ public class BishopPreMove extends PreMoveImpl {
                 newY += bishopYMoves[dir];
 
                 if (!isValidMove(newX, newY)) break;
-                if (ApplicationStart.hasFigureAt(newX, newY)) break;
+                ChessFigureImpl chessFigure = ApplicationStart.hasFigureAt(newX, newY);
+                if (chessFigure != null) {
+                    if (chessFigure.isWhite != this.isWhite){
+                        ApplicationStart.premovefigureGroup.getChildren().add(
+                                new PreMoveDot(newX, newY) // true,true → maybe premove flag
+                        );
+                    }
+                    break;
+                }
 
                 ApplicationStart.premovefigureGroup.getChildren().add(
                         new PreMoveDot(newX, newY) // true,true → maybe premove flag

@@ -12,9 +12,10 @@ public class QueenPreMove extends PreMoveImpl {
     int[] queenYMovesDirect = {0, 0, 1, -1};
 
 
-    public QueenPreMove(int currentXCoordinate, int currentYCoordinate) {
+    public QueenPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite) {
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;
+        this.isWhite = isWhite;
     }
 
     @Override
@@ -28,7 +29,7 @@ public class QueenPreMove extends PreMoveImpl {
                 newY += queenYMovesDiagonal[dir];
 
                 if (!isValidMove(newX, newY)) break;
-                if (ApplicationStart.hasFigureAt(newX, newY)) break;
+                if (ApplicationStart.hasFigureAt(newX, newY) != null) break;
 
                 ApplicationStart.premovefigureGroup.getChildren().add(
                         new PreMoveDot(newX, newY) // true,true → maybe premove flag
@@ -41,7 +42,7 @@ public class QueenPreMove extends PreMoveImpl {
                 newY += queenYMovesDirect[dir];
 
                 if (!isValidMove(newX, newY)) break;
-                if (ApplicationStart.hasFigureAt(newX, newY)) break;
+                if (ApplicationStart.hasFigureAt(newX, newY) != null) break;
 
                 ApplicationStart.premovefigureGroup.getChildren().add(
                         new PreMoveDot(newX, newY) // true,true → maybe premove flag

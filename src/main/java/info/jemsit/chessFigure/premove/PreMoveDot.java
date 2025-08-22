@@ -15,13 +15,11 @@ public class PreMoveDot extends ChessFigureImpl {
         type = FigureTypes.KNIGHT;
 
         relocate(x* ApplicationStart.TILE_SIZE, y * ApplicationStart.TILE_SIZE);
-
-
         Circle circle = new Circle(ApplicationStart.TILE_SIZE / 6.0, Color.color(1,0,0,0.3));
-
+        circle.setStroke(Color.WHITE);
+        circle.setStrokeWidth(2);
         StackPane stack = new StackPane(circle);
         stack.setPrefSize(ApplicationStart.TILE_SIZE, ApplicationStart.TILE_SIZE);
-
 
         getChildren().add(stack);
     }

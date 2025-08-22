@@ -21,6 +21,7 @@ public class ChessFigureImpl extends StackPane implements ChessFigure {
     public void handleMousePressed(MouseEvent mouseEvent) {
         mouseX = mouseEvent.getSceneX() - getLayoutX();
         mouseY = mouseEvent.getSceneY() - getLayoutY();
+        toFront();
         PreMoveFigure preMoveThread = new  PreMoveFigure(this, isWhite);
         preMoveThread.addPreMove();
     }
@@ -80,6 +81,6 @@ public class ChessFigureImpl extends StackPane implements ChessFigure {
 
     @Override
     public boolean canNotMoveTo(int x, int y) {
-        return ApplicationStart.hasFigureAt(x, y) || !ApplicationStart.hasPreMoveFigureAt(x, y);
+        return ApplicationStart.hasFigureAt(x, y) != null || !ApplicationStart.hasPreMoveFigureAt(x, y);
     }
 }

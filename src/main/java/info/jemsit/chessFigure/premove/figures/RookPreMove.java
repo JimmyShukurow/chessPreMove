@@ -10,9 +10,10 @@ public class RookPreMove extends PreMoveImpl {
     int[] rookYMoves = {0, 0, 1, -1};
 
 
-    public RookPreMove(int currentXCoordinate, int currentYCoordinate) {
+    public RookPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite) {
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;
+        this.isWhite = isWhite;
     }
 
     @Override
@@ -26,14 +27,13 @@ public class RookPreMove extends PreMoveImpl {
                 newY += rookYMoves[dir];
 
                 if (!isValidMove(newX, newY)) break;
-                if (ApplicationStart.hasFigureAt(newX, newY)) break;
+                if (ApplicationStart.hasFigureAt(newX, newY) != null) break;
 
                 ApplicationStart.premovefigureGroup.getChildren().add(
                         new PreMoveDot(newX, newY) // true,true → maybe premove flag
                 );
             }
         }
-
     }
 
     @Override

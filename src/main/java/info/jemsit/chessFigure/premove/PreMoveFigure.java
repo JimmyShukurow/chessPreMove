@@ -32,23 +32,23 @@ public class PreMoveFigure {
     public void addPreMove() {
         switch (figureType.getFigureType()) {
             case KNIGHT -> {
-                PreMove knightPreMove = new KnightPreMove(figureType.getXCoordinate(), figureType.getYCoordinate());
+                PreMove knightPreMove = new KnightPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
                 Platform.runLater((knightPreMove::addPreMoves));
             }
             case BISHOP -> {
-                PreMove bishopPreMove = new BishopPreMove(figureType.getXCoordinate(), figureType.getYCoordinate());
+                PreMove bishopPreMove = new BishopPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
                 Platform.runLater((bishopPreMove::addPreMoves));
             }
             case ROOK -> {
-                PreMove rookPreMove = new RookPreMove(figureType.getXCoordinate(), figureType.getYCoordinate());
+                PreMove rookPreMove = new RookPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
                 Platform.runLater((rookPreMove::addPreMoves));
             }
             case QUEEN -> {
-                PreMove queenPreMove = new QueenPreMove(figureType.getXCoordinate(), figureType.getYCoordinate());
+                PreMove queenPreMove = new QueenPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
                 Platform.runLater((queenPreMove::addPreMoves));
             }
             case KING -> {
-                PreMove kingPreMove = new KingPreMove(figureType.getXCoordinate(), figureType.getYCoordinate());
+                PreMove kingPreMove = new KingPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
                 Platform.runLater((kingPreMove::addPreMoves));
             }
             case PAWN -> {

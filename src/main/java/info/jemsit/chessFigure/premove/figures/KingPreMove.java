@@ -11,9 +11,10 @@ public class KingPreMove extends PreMoveImpl {
     int[] kingXMovesDirect = {1, -1, 0, 0};
     int[] kingYMovesDirect = {0, 0, 1, -1};
 
-    public KingPreMove(int currentXCoordinate, int currentYCoordinate) {
+    public KingPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite) {
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;
+        this.isWhite = isWhite;
     }
 
     @Override
@@ -25,7 +26,7 @@ public class KingPreMove extends PreMoveImpl {
             newX += kingXMovesDiagonal[dir];
             newY += kingYMovesDiagonal[dir];
 
-            if (isValidMove(newX, newY) && !ApplicationStart.hasFigureAt(newX, newY)) {
+            if (isValidMove(newX, newY) && ApplicationStart.hasFigureAt(newX, newY) == null) {
                 ApplicationStart.premovefigureGroup.getChildren().add(
                         new PreMoveDot(newX, newY) // true,true → maybe premove flag
                 );
@@ -37,7 +38,7 @@ public class KingPreMove extends PreMoveImpl {
             newX += kingXMovesDirect[dir];
             newY += kingYMovesDirect[dir];
 
-            if (isValidMove(newX, newY) && !ApplicationStart.hasFigureAt(newX, newY)) {
+            if (isValidMove(newX, newY) && ApplicationStart.hasFigureAt(newX, newY) == null) {
                 ApplicationStart.premovefigureGroup.getChildren().add(
                         new PreMoveDot(newX, newY) // true,true → maybe premove flag
                 );
