@@ -3,11 +3,14 @@ package info.jemsit.chessFigure.figures;
 import info.jemsit.ApplicationStart;
 import info.jemsit.chessFigure.ChessFigureImpl;
 import info.jemsit.chessFigure.FigureTypes;
+import info.jemsit.chessFigure.premove.PreMoveFigure;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 public class PawnFigure extends ChessFigureImpl {
 
+    private boolean firstMove = true;
 
     public PawnFigure(int x, int y, boolean isWhite) {
         this.XCoordinate = x;
@@ -27,6 +30,32 @@ public class PawnFigure extends ChessFigureImpl {
         setOnMouseReleased(this::handleMouseDragExited);
     }
 
+    @Override
+    public void handleMousePressed(MouseEvent mouseEvent) {
+        mouseX = mouseEvent.getSceneX() - getLayoutX();
+        mouseY = mouseEvent.getSceneY() - getLayoutY();
+        PreMoveFigure preMoveThread = new PreMoveFigure(this, isWhite, isFirstMove());
+        preMoveThread.addPreMove();
+    }
+
+    @Override
+    public void handleMouseDragExited(MouseEvent mouseEvent) {
+        int originalX = this.XCoordinate;
+        int originalY = this.YCoordinate;
+
+        super.handleMouseDragExited(mouseEvent);
+
+        if (this.XCoordinate != originalX || this.YCoordinate != originalY) {
+            setFirstMove(false);
+        }
+    }
 
 
+    public boolean isFirstMove() {
+        return firstMove;
+    }
+
+    public void setFirstMove(boolean firstMove) {
+        this.firstMove = firstMove;
+    }
 }

@@ -8,24 +8,30 @@ public class PawnPreMove extends PreMoveImpl {
 
     int[] pawnMoves = {1, -1};
     boolean isWhite;
+    boolean isFirstMove;
 
 
-    public PawnPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite) {
+    public PawnPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite, boolean isFirstMove) {
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;
         this.isWhite = isWhite;
+        this.isFirstMove = isFirstMove;
     }
 
     @Override
     public void addPreMoves() {
-        int newY = currentYCoordinate;
+        add();
+        if (this.isFirstMove) add();
+    }
 
-        if (!isWhite) newY += pawnMoves[0];
-        else  newY += pawnMoves[1];
+    private void add() {
 
-        if (isValidMove(currentXCoordinate, newY) && !ApplicationStart.hasFigureAt(currentXCoordinate, newY)) {
+        if (!isWhite) currentYCoordinate++;
+        else  currentYCoordinate--;
+
+        if (isValidMove(currentXCoordinate, currentYCoordinate) && !ApplicationStart.hasFigureAt(currentXCoordinate, currentYCoordinate)) {
             ApplicationStart.premovefigureGroup.getChildren().add(
-                    new PreMoveDot(currentXCoordinate, newY) // true,true → maybe premove flag
+                    new PreMoveDot(currentXCoordinate, currentYCoordinate) // true,true → maybe premove flag
             );
         }
     }

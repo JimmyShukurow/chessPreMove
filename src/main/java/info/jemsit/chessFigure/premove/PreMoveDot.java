@@ -3,8 +3,6 @@ package info.jemsit.chessFigure.premove;
 import info.jemsit.ApplicationStart;
 import info.jemsit.chessFigure.ChessFigureImpl;
 import info.jemsit.chessFigure.FigureTypes;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -26,8 +24,5 @@ public class PreMoveDot extends ChessFigureImpl {
 
 
         getChildren().add(stack);
-        setOnMousePressed(this::handleMousePressed);
-        setOnMouseDragged(this::handleMouseDragged);
-        setOnMouseReleased(this::handleMouseDragExited);
     }
 }

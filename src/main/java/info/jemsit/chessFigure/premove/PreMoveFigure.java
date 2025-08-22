@@ -9,7 +9,14 @@ public class PreMoveFigure {
 
     private final ChessFigure figureType;
     private final boolean isWhite;
+    private boolean isFirstMove;
 
+
+    public PreMoveFigure(ChessFigure figureType, boolean isWhite, boolean isFirstMove) {
+        this.figureType = figureType;
+        this.isWhite = isWhite;
+        this.isFirstMove = isFirstMove;
+    }
 
     public PreMoveFigure(ChessFigure figureType, boolean isWhite) {
         this.figureType = figureType;
@@ -45,7 +52,7 @@ public class PreMoveFigure {
                 Platform.runLater((kingPreMove::addPreMoves));
             }
             case PAWN -> {
-                PreMove pawnPreMove = new PawnPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite );
+                PreMove pawnPreMove = new PawnPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite, this.isFirstMove);
                 Platform.runLater((pawnPreMove::addPreMoves));
             }
         }
