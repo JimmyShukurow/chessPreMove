@@ -21,7 +21,7 @@ public class ChessFigureImpl extends StackPane implements ChessFigure {
     public void handleMousePressed(MouseEvent mouseEvent) {
         mouseX = mouseEvent.getSceneX() - getLayoutX();
         mouseY = mouseEvent.getSceneY() - getLayoutY();
-        PreMoveFigure preMoveThread = new  PreMoveFigure(this);
+        PreMoveFigure preMoveThread = new  PreMoveFigure(this, isWhite);
         preMoveThread.addPreMove();
     }
 

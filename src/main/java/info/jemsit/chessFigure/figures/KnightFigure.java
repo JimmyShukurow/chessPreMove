@@ -15,7 +15,10 @@ public class KnightFigure extends ChessFigureImpl {
         this.isWhite = isWhite;
         type = FigureTypes.KNIGHT;
         relocate(x* ApplicationStart.TILE_SIZE, y * ApplicationStart.TILE_SIZE);
-        Image image = new Image("images/knightb.png", ApplicationStart.TILE_SIZE, ApplicationStart.TILE_SIZE, false, false);
+
+        Image image;
+        if (isWhite) image = new Image("images/knightw.png", ApplicationStart.TILE_SIZE, ApplicationStart.TILE_SIZE, false, false);
+        else image = new Image("images/knightb.png", ApplicationStart.TILE_SIZE, ApplicationStart.TILE_SIZE, false, false);
         ImageView imageView = new ImageView(image);
 
         getChildren().add(imageView);
@@ -23,7 +26,5 @@ public class KnightFigure extends ChessFigureImpl {
         setOnMouseDragged(this::handleMouseDragged);
         setOnMouseReleased(this::handleMouseDragExited);
     }
-
-
 
 }

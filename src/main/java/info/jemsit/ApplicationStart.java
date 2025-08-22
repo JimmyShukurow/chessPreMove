@@ -22,11 +22,8 @@ public class ApplicationStart extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         BorderPane pane = new BorderPane();
-        figureGroup.getChildren().add(new KnightFigure(5, 5, false));
-        figureGroup.getChildren().add(new BishopFigure(2, 2, false));
-        figureGroup.getChildren().add(new RookFigure(6, 6, false));
-        figureGroup.getChildren().add(new QueenFigure(1, 6, false));
-        figureGroup.getChildren().add(new KingFigure(6, 1, false));
+        placeAllBlackFigures();
+        placeAllWhiteFigures();
         pane.getChildren().addAll(tileGroup, premovefigureGroup, figureGroup);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -36,7 +33,7 @@ public class ApplicationStart extends Application {
         }
 
         Scene scene = new Scene(pane, SCENE_WIDTH, SCENE_HEIGHT);
-        stage.setTitle("Jemsit Application");
+        stage.setTitle("Jimmy Chess Application");
         stage.setScene(scene);
         stage.show();
     }
@@ -66,6 +63,34 @@ public class ApplicationStart extends Application {
             }
         }
         return false;
+    }
+
+    private void placeAllBlackFigures() {
+        figureGroup.getChildren().add(new RookFigure(0, 0, false));
+        figureGroup.getChildren().add(new KnightFigure(1, 0, false));
+        figureGroup.getChildren().add(new BishopFigure(2, 0, false));
+        figureGroup.getChildren().add(new QueenFigure(3, 0, false));
+        figureGroup.getChildren().add(new KingFigure(4, 0, false));
+        figureGroup.getChildren().add(new BishopFigure(5, 0, false));
+        figureGroup.getChildren().add(new KnightFigure(6, 0, false));
+        figureGroup.getChildren().add(new RookFigure(7, 0, false));
+        for (int i = 0; i < 8; i++) {
+            figureGroup.getChildren().add(new PawnFigure(i, 1, false));
+        }
+    }
+
+    private void placeAllWhiteFigures(){
+        figureGroup.getChildren().add(new RookFigure(0, 7, true));
+        figureGroup.getChildren().add(new KnightFigure(1, 7, true));
+        figureGroup.getChildren().add(new BishopFigure(2, 7, true));
+        figureGroup.getChildren().add(new QueenFigure(3, 7, true));
+        figureGroup.getChildren().add(new KingFigure(4, 7, true));
+        figureGroup.getChildren().add(new BishopFigure(5, 7, true));
+        figureGroup.getChildren().add(new KnightFigure(6, 7, true));
+        figureGroup.getChildren().add(new RookFigure(7, 7, true));
+        for (int i = 0; i < 8; i++) {
+            figureGroup.getChildren().add(new PawnFigure(i, 6, true));
+        }
     }
 
 }

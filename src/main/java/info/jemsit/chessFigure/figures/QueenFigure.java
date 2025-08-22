@@ -15,7 +15,9 @@ public class QueenFigure extends ChessFigureImpl {
         this.isWhite = isWhite;
         type = FigureTypes.QUEEN;
         relocate(x* ApplicationStart.TILE_SIZE, y * ApplicationStart.TILE_SIZE);
-        Image image = new Image("images/queenb.png", ApplicationStart.TILE_SIZE, ApplicationStart.TILE_SIZE, false, false);
+        Image image;
+        if (isWhite) image = new Image("images/queenw.png", ApplicationStart.TILE_SIZE, ApplicationStart.TILE_SIZE, false, false);
+        else image = new Image("images/queenb.png", ApplicationStart.TILE_SIZE, ApplicationStart.TILE_SIZE, false, false);
         ImageView imageView = new ImageView(image);
 
         getChildren().add(imageView);

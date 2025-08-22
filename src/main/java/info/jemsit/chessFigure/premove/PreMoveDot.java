@@ -5,6 +5,9 @@ import info.jemsit.chessFigure.ChessFigureImpl;
 import info.jemsit.chessFigure.FigureTypes;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class PreMoveDot extends ChessFigureImpl {
 
@@ -15,12 +18,14 @@ public class PreMoveDot extends ChessFigureImpl {
 
         relocate(x* ApplicationStart.TILE_SIZE, y * ApplicationStart.TILE_SIZE);
 
-        Image image = new Image("images/dot.png", ApplicationStart.TILE_SIZE, ApplicationStart.TILE_SIZE, false, false);
-        ImageView imageView = new ImageView(image);
 
-        imageView.setOpacity(0.3);
+        Circle circle = new Circle(ApplicationStart.TILE_SIZE / 6.0, Color.color(1,0,0,0.3));
 
-        getChildren().add(imageView);
+        StackPane stack = new StackPane(circle);
+        stack.setPrefSize(ApplicationStart.TILE_SIZE, ApplicationStart.TILE_SIZE);
+
+
+        getChildren().add(stack);
         setOnMousePressed(this::handleMousePressed);
         setOnMouseDragged(this::handleMouseDragged);
         setOnMouseReleased(this::handleMouseDragExited);

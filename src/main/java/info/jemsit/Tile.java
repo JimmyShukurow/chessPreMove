@@ -16,7 +16,7 @@ public class Tile extends Rectangle {
         setWidth(ApplicationStart.TILE_SIZE);
         setHeight(ApplicationStart.TILE_SIZE);
         relocate(x * ApplicationStart.TILE_SIZE, y * ApplicationStart.TILE_SIZE);
-        setFill(light ? Color.BROWN : Color.GRAY);
+        setFill(light ? Color.DARKGREY : Color.WHEAT);
     }
 
 }
