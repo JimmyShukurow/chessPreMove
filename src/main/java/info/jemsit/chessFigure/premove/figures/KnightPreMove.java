@@ -4,6 +4,8 @@ import info.jemsit.ApplicationStart;
 import info.jemsit.chessFigure.ChessFigureImpl;
 import info.jemsit.chessFigure.premove.PreMoveDot;
 import info.jemsit.chessFigure.premove.PreMoveImpl;
+import info.jemsit.chessFigure.premove.PreMoveSquare;
+import javafx.application.Platform;
 
 public class KnightPreMove extends PreMoveImpl {
 
@@ -17,6 +19,7 @@ public class KnightPreMove extends PreMoveImpl {
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;
         this.isWhite = isWhite;
+        Platform.runLater(this::addPreMoves);
     }
 
     @Override
@@ -26,11 +29,11 @@ public class KnightPreMove extends PreMoveImpl {
             int newY = currentYCoordinate + knightYMoves[i];
 
             if (isValidMove(newX, newY)) {
-                ApplicationStart.premovefigureGroup.getChildren().add(new PreMoveDot(newX, newY)); // Add pre-move knight figure
+                ApplicationStart.premovefigureGroup.getChildren().add(new PreMoveDot(newX, newY, isWhite)); // Add pre-move knight figure
             }
             ChessFigureImpl chessFigure = ApplicationStart.hasFigureAt(newX, newY);
             if (chessFigure != null && chessFigure.isWhite != isWhite) {
-                ApplicationStart.premovefigureGroup.getChildren().add(new PreMoveDot(newX, newY)); // Add pre-move knight figure
+                ApplicationStart.premovefigureGroup.getChildren().add(new PreMoveSquare(newX, newY,isWhite)); // Add pre-move knight figure
             }
         }
     }

@@ -31,30 +31,12 @@ public class PreMoveFigure {
 
     public void addPreMove() {
         switch (figureType.getFigureType()) {
-            case KNIGHT -> {
-                PreMove knightPreMove = new KnightPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
-                Platform.runLater((knightPreMove::addPreMoves));
-            }
-            case BISHOP -> {
-                PreMove bishopPreMove = new BishopPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
-                Platform.runLater((bishopPreMove::addPreMoves));
-            }
-            case ROOK -> {
-                PreMove rookPreMove = new RookPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
-                Platform.runLater((rookPreMove::addPreMoves));
-            }
-            case QUEEN -> {
-                PreMove queenPreMove = new QueenPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
-                Platform.runLater((queenPreMove::addPreMoves));
-            }
-            case KING -> {
-                PreMove kingPreMove = new KingPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
-                Platform.runLater((kingPreMove::addPreMoves));
-            }
-            case PAWN -> {
-                PreMove pawnPreMove = new PawnPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite, this.isFirstMove);
-                Platform.runLater((pawnPreMove::addPreMoves));
-            }
+            case KNIGHT -> new KnightPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
+            case BISHOP -> new BishopPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
+            case ROOK   -> new RookPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
+            case QUEEN  -> new QueenPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
+            case KING   -> new KingPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite);
+            case PAWN   -> new PawnPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite, this.isFirstMove);
         }
     }
 }

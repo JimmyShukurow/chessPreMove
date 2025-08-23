@@ -25,7 +25,7 @@ public class ApplicationStart extends Application {
         BorderPane pane = new BorderPane();
         placeAllBlackFigures();
         placeAllWhiteFigures();
-        pane.getChildren().addAll(tileGroup, figureGroup, premovefigureGroup);
+        pane.getChildren().addAll(tileGroup, premovefigureGroup, figureGroup);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Tile tile = new Tile((i + j) % 2 == 0, i, j);

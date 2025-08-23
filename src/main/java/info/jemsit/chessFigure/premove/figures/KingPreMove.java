@@ -3,6 +3,7 @@ package info.jemsit.chessFigure.premove.figures;
 import info.jemsit.ApplicationStart;
 import info.jemsit.chessFigure.premove.PreMoveDot;
 import info.jemsit.chessFigure.premove.PreMoveImpl;
+import javafx.application.Platform;
 
 public class KingPreMove extends PreMoveImpl {
 
@@ -15,6 +16,7 @@ public class KingPreMove extends PreMoveImpl {
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;
         this.isWhite = isWhite;
+        Platform.runLater((this::addPreMoves));
     }
 
     @Override
@@ -28,7 +30,7 @@ public class KingPreMove extends PreMoveImpl {
 
             if (isValidMove(newX, newY) && ApplicationStart.hasFigureAt(newX, newY) == null) {
                 ApplicationStart.premovefigureGroup.getChildren().add(
-                        new PreMoveDot(newX, newY) // true,true → maybe premove flag
+                        new PreMoveDot(newX, newY ,isWhite) // true,true → maybe premove flag
                 );
             }
 
@@ -40,7 +42,7 @@ public class KingPreMove extends PreMoveImpl {
 
             if (isValidMove(newX, newY) && ApplicationStart.hasFigureAt(newX, newY) == null) {
                 ApplicationStart.premovefigureGroup.getChildren().add(
-                        new PreMoveDot(newX, newY) // true,true → maybe premove flag
+                        new PreMoveDot(newX, newY,isWhite) // true,true → maybe premove flag
                 );
             }
         }

@@ -4,6 +4,8 @@ import info.jemsit.ApplicationStart;
 import info.jemsit.chessFigure.ChessFigureImpl;
 import info.jemsit.chessFigure.premove.PreMoveDot;
 import info.jemsit.chessFigure.premove.PreMoveImpl;
+import info.jemsit.chessFigure.premove.PreMoveSquare;
+import javafx.application.Platform;
 
 public class BishopPreMove extends PreMoveImpl {
 
@@ -16,6 +18,7 @@ public class BishopPreMove extends PreMoveImpl {
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;
         this.isWhite = isWhite;
+        Platform.runLater(this::addPreMoves);
     }
 
     @Override
@@ -31,16 +34,16 @@ public class BishopPreMove extends PreMoveImpl {
                 if (!isValidMove(newX, newY)) break;
                 ChessFigureImpl chessFigure = ApplicationStart.hasFigureAt(newX, newY);
                 if (chessFigure != null) {
-                    if (chessFigure.isWhite != this.isWhite){
+                    if (chessFigure.isWhite != this.isWhite) {
                         ApplicationStart.premovefigureGroup.getChildren().add(
-                                new PreMoveDot(newX, newY) // true,true → maybe premove flag
+                                new PreMoveSquare(newX, newY, isWhite)
                         );
                     }
                     break;
                 }
 
                 ApplicationStart.premovefigureGroup.getChildren().add(
-                        new PreMoveDot(newX, newY) // true,true → maybe premove flag
+                        new PreMoveDot(newX, newY, isWhite)
                 );
             }
         }
