@@ -28,7 +28,7 @@ public class KingPreMove extends PreMoveImpl {
 
             if (isValidMove(newX, newY) && ApplicationStart.hasFigureAt(newX, newY) == null) {
                 ApplicationStart.premovefigureGroup.getChildren().add(
-                        new PreMoveDot(newX, newY) // true,true → maybe premove flag
+                        new PreMoveDot(newX, newY ,isWhite) // true,true → maybe premove flag
                 );
             }
 
@@ -40,7 +40,7 @@ public class KingPreMove extends PreMoveImpl {
 
             if (isValidMove(newX, newY) && ApplicationStart.hasFigureAt(newX, newY) == null) {
                 ApplicationStart.premovefigureGroup.getChildren().add(
-                        new PreMoveDot(newX, newY) // true,true → maybe premove flag
+                        new PreMoveDot(newX, newY,isWhite) // true,true → maybe premove flag
                 );
             }
         }

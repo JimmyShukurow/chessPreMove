@@ -1,8 +1,10 @@
 package info.jemsit.chessFigure.premove.figures;
 
 import info.jemsit.ApplicationStart;
+import info.jemsit.chessFigure.ChessFigureImpl;
 import info.jemsit.chessFigure.premove.PreMoveDot;
 import info.jemsit.chessFigure.premove.PreMoveImpl;
+import info.jemsit.chessFigure.premove.PreMoveSquare;
 
 public class RookPreMove extends PreMoveImpl {
 
@@ -27,10 +29,18 @@ public class RookPreMove extends PreMoveImpl {
                 newY += rookYMoves[dir];
 
                 if (!isValidMove(newX, newY)) break;
-                if (ApplicationStart.hasFigureAt(newX, newY) != null) break;
+                ChessFigureImpl chessFigure = ApplicationStart.hasFigureAt(newX, newY);
+                if (chessFigure != null) {
+                    if (chessFigure.isWhite != isWhite) {
+                        ApplicationStart.premovefigureGroup.getChildren().add(
+                                new PreMoveSquare(newX, newY, isWhite) // true,true → maybe premove flag
+                        );
+                    }
+                    break;
+                };
 
                 ApplicationStart.premovefigureGroup.getChildren().add(
-                        new PreMoveDot(newX, newY) // true,true → maybe premove flag
+                        new PreMoveDot(newX, newY, isWhite) // true,true → maybe premove flag
                 );
             }
         }
