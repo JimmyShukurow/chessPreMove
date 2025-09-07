@@ -3,7 +3,6 @@ package info.jemsit.chessFigure.premove.figures;
 import info.jemsit.ApplicationStart;
 import info.jemsit.chessFigure.ChessFigureImpl;
 import info.jemsit.chessFigure.premove.PreMoveDot;
-import info.jemsit.chessFigure.premove.PreMoveImpl;
 import info.jemsit.chessFigure.premove.PreMoveSquare;
 import javafx.application.Platform;
 
@@ -13,10 +12,11 @@ public class RookPreMove extends PreMoveImpl {
     int[] rookYMoves = {0, 0, 1, -1};
 
 
-    public RookPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite) {
+    public RookPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite, boolean forKingSafety) {
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;
         this.isWhite = isWhite;
+        this.forKingSafety = forKingSafety;
         Platform.runLater(this::addPreMoves);
     }
 
@@ -39,11 +39,14 @@ public class RookPreMove extends PreMoveImpl {
                         );
                     }
                     break;
-                };
-
-                ApplicationStart.premovefigureGroup.getChildren().add(
-                        new PreMoveDot(newX, newY, isWhite) // true,true → maybe premove flag
-                );
+                }
+                if (forKingSafety) {
+                    super.addPreMoveToSafeKingMoves(newX, newY);
+                } else {
+                    ApplicationStart.premovefigureGroup.getChildren().add(
+                            new PreMoveDot(newX, newY, isWhite) // true,true → maybe premove flag
+                    );
+                }
             }
         }
     }

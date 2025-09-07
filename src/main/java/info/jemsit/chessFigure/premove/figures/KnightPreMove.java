@@ -3,7 +3,6 @@ package info.jemsit.chessFigure.premove.figures;
 import info.jemsit.ApplicationStart;
 import info.jemsit.chessFigure.ChessFigureImpl;
 import info.jemsit.chessFigure.premove.PreMoveDot;
-import info.jemsit.chessFigure.premove.PreMoveImpl;
 import info.jemsit.chessFigure.premove.PreMoveSquare;
 import javafx.application.Platform;
 
@@ -15,10 +14,11 @@ public class KnightPreMove extends PreMoveImpl {
     int[] knightYMoves = {2, -2, 1, -1, 2, -2, 1, -1};
 
 
-    public KnightPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite) {
+    public KnightPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite, boolean forKingSafety) {
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;
         this.isWhite = isWhite;
+        this.forKingSafety = forKingSafety;
         Platform.runLater(this::addPreMoves);
     }
 
@@ -28,12 +28,15 @@ public class KnightPreMove extends PreMoveImpl {
             int newX = currentXCoordinate + knightXMoves[i];
             int newY = currentYCoordinate + knightYMoves[i];
 
+            //Just add dots to show where can move
             if (isValidMove(newX, newY)) {
-                ApplicationStart.premovefigureGroup.getChildren().add(new PreMoveDot(newX, newY, isWhite)); // Add pre-move knight figure
+                if (forKingSafety) super.addPreMoveToSafeKingMoves(newX, newY);
+                else ApplicationStart.premovefigureGroup.getChildren().add(new PreMoveDot(newX, newY, isWhite)); // Add pre-move knight figure
             }
+            //Target figure to capture
             ChessFigureImpl chessFigure = ApplicationStart.hasFigureAt(newX, newY);
             if (chessFigure != null && chessFigure.isWhite != isWhite) {
-                ApplicationStart.premovefigureGroup.getChildren().add(new PreMoveSquare(newX, newY,isWhite)); // Add pre-move knight figure
+                ApplicationStart.premovefigureGroup.getChildren().add(new PreMoveSquare(newX, newY, isWhite)); // Add pre-move knight figure
             }
         }
     }

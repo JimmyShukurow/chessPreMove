@@ -1,24 +1,26 @@
 package info.jemsit.chessFigure.premove.figures;
 
 import info.jemsit.ApplicationStart;
+import info.jemsit.chessFigure.ChessFigure;
 import info.jemsit.chessFigure.ChessFigureImpl;
 import info.jemsit.chessFigure.premove.PreMoveDot;
-import info.jemsit.chessFigure.premove.PreMoveImpl;
 import info.jemsit.chessFigure.premove.PreMoveSquare;
 import javafx.application.Platform;
 
 public class PawnPreMove extends PreMoveImpl {
 
     boolean isFirstMove;
+    ChessFigureImpl chessFigure;
 
 
-    public PawnPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite, boolean isFirstMove) {
+    public PawnPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite, boolean isFirstMove, boolean forKingSafety) {
+        this.chessFigure = ApplicationStart.hasFigureAt(currentXCoordinate, currentYCoordinate);
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;
         this.isWhite = isWhite;
         this.isFirstMove = isFirstMove;
+        this.forKingSafety = forKingSafety;
         Platform.runLater((this::addPreMoves));
-
     }
 
     @Override
@@ -34,9 +36,9 @@ public class PawnPreMove extends PreMoveImpl {
     private void add() {
 
         if (isWhite) currentYCoordinate--;
-        else  currentYCoordinate++;
+        else currentYCoordinate++;
 
-        if (isValidMove(currentXCoordinate, currentYCoordinate) && ApplicationStart.hasFigureAt(currentXCoordinate, currentYCoordinate) == null) {
+        if (isValidMove(currentXCoordinate, currentYCoordinate) && ApplicationStart.hasFigureAt(currentXCoordinate, currentYCoordinate) == null && !forKingSafety) {
             ApplicationStart.premovefigureGroup.getChildren().add(
                     new PreMoveDot(currentXCoordinate, currentYCoordinate, isWhite)
             );
@@ -51,17 +53,22 @@ public class PawnPreMove extends PreMoveImpl {
 
     private void addTargetsIfThereIs() {
         ChessFigureImpl chessFigureAtRight = ApplicationStart.hasFigureAt(currentXCoordinate + 1, currentYCoordinate);
-        if (chessFigureAtRight != null && chessFigureAtRight.isWhite != isWhite ) {
+        if (chessFigureAtRight != null && chessFigureAtRight.isWhite != isWhite && !forKingSafety) {
             ApplicationStart.premovefigureGroup.getChildren().add(
                     new PreMoveSquare(currentXCoordinate + 1, currentYCoordinate, isWhite)
             );
         }
 
         ChessFigureImpl chessFigureAtLeft = ApplicationStart.hasFigureAt(currentXCoordinate - 1, currentYCoordinate);
-        if (chessFigureAtLeft != null && chessFigureAtLeft.isWhite != isWhite ) {
+        if (chessFigureAtLeft != null && chessFigureAtLeft.isWhite != isWhite && !forKingSafety) {
             ApplicationStart.premovefigureGroup.getChildren().add(
                     new PreMoveSquare(currentXCoordinate - 1, currentYCoordinate, isWhite)
             );
+        }
+
+        if(this.chessFigure.isWhite == isWhite && forKingSafety) {
+            super.addPreMoveToSafeKingMoves(currentXCoordinate + 1, currentYCoordinate);
+            super.addPreMoveToSafeKingMoves(currentXCoordinate - 1, currentYCoordinate);
         }
     }
 }
