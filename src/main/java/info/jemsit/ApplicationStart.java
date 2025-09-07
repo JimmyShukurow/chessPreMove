@@ -121,5 +121,4 @@ public class ApplicationStart extends Application {
             figureGroup.getChildren().add(new PawnFigure(i, 6, true));
         }
     }
-
 }

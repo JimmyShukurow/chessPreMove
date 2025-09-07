@@ -3,9 +3,11 @@ package info.jemsit.chessFigure;
 import info.jemsit.ApplicationStart;
 import info.jemsit.Sides;
 import info.jemsit.chessFigure.premove.PreMoveFigure;
+import info.jemsit.chessFigure.premove.PreMoveSquare;
 import info.jemsit.components.SideBarComponent;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
@@ -16,6 +18,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 
+import static info.jemsit.ApplicationStart.TILE_SIZE;
+
 public class ChessFigureImpl extends StackPane implements ChessFigure {
 
     public double mouseX;
@@ -25,9 +29,12 @@ public class ChessFigureImpl extends StackPane implements ChessFigure {
     public int YCoordinate;
     public boolean isWhite;
 
-    private static MediaPlayer currentMediaPlayer;
-    private static Media moveMedia;
+    private MediaPlayer currentMediaPlayer;
+    private Media moveMedia;
 
+    public ChessFigureImpl() {
+        setDefaultMoveSound();
+    }
 
     @Override
     public void handleMousePressed(MouseEvent mouseEvent) {
@@ -46,12 +53,15 @@ public class ChessFigureImpl extends StackPane implements ChessFigure {
 
     @Override
     public void handleMouseDragExited(MouseEvent mouseEvent) {
-        double snappedX = Math.round(getLayoutX() / ApplicationStart.TILE_SIZE) * ApplicationStart.TILE_SIZE;
-        double snappedY = Math.round(getLayoutY() / ApplicationStart.TILE_SIZE) * ApplicationStart.TILE_SIZE;
+        double snappedX = Math.round(getLayoutX() / TILE_SIZE) * TILE_SIZE;
+        double snappedY = Math.round(getLayoutY() / TILE_SIZE) * TILE_SIZE;
 
-        if (canNotMoveTo((int) (snappedX / ApplicationStart.TILE_SIZE), (int) (snappedY / ApplicationStart.TILE_SIZE)) || ApplicationStart.turn != (isWhite ? Sides.WHITE : Sides.BLACK)) {
-            snappedX = this.XCoordinate * ApplicationStart.TILE_SIZE;
-            snappedY = this.YCoordinate * ApplicationStart.TILE_SIZE;
+        if (ApplicationStart.turn == (isWhite ? Sides.WHITE : Sides.BLACK) && canCaptureAt((int) (snappedX / TILE_SIZE), (int) (snappedY / TILE_SIZE))) {
+            capture((int) (snappedX / TILE_SIZE), (int) (snappedY / TILE_SIZE));
+            makeCaptureSound();
+        } else if (ApplicationStart.turn != (isWhite ? Sides.WHITE : Sides.BLACK) || canNotMoveTo((int) (snappedX / TILE_SIZE), (int) (snappedY / TILE_SIZE))) {
+            snappedX = this.XCoordinate * TILE_SIZE;
+            snappedY = this.YCoordinate * TILE_SIZE;
         } else {
             makeMoveSound();
             ApplicationStart.turn = isWhite ? Sides.BLACK : Sides.WHITE;
@@ -73,8 +83,8 @@ public class ChessFigureImpl extends StackPane implements ChessFigure {
         });
 
         transition.play();
-        this.XCoordinate = (int) (snappedX / ApplicationStart.TILE_SIZE);
-        this.YCoordinate = (int) (snappedY / ApplicationStart.TILE_SIZE);
+        this.XCoordinate = (int) (snappedX / TILE_SIZE);
+        this.YCoordinate = (int) (snappedY / TILE_SIZE);
         PreMoveFigure.clearPreMove();
     }
 
@@ -94,8 +104,21 @@ public class ChessFigureImpl extends StackPane implements ChessFigure {
     }
 
     @Override
-    public void capture() {
-        System.out.println("I will capture this figure");
+    public void capture(int x, int y) {
+        StackPane figureToCapture = null;
+        for (Node node : ApplicationStart.figureGroup.getChildren()) {
+            if (node instanceof StackPane) {
+                if (node.getLayoutX() / TILE_SIZE == x && node.getLayoutY() / TILE_SIZE == y) {
+                    figureToCapture = (ChessFigureImpl) node;
+                    break;
+                }
+            }
+        }
+        if (figureToCapture != null) {
+            ApplicationStart.figureGroup.getChildren().remove(figureToCapture);
+        }
+        ApplicationStart.turn = isWhite ? Sides.BLACK : Sides.WHITE;
+        SideBarComponent.updateTurnDisplay();
     }
 
     @Override
@@ -103,16 +126,16 @@ public class ChessFigureImpl extends StackPane implements ChessFigure {
         return ApplicationStart.hasFigureAt(x, y) != null || !ApplicationStart.hasPreMoveFigureAt(x, y);
     }
 
-    static {
+    public void setDefaultMoveSound() {
         URL soundURL = ChessFigureImpl.class.getResource("/sounds/kiss-move.wav");
-        if (soundURL != null) {
-            moveMedia = new Media(soundURL.toString());
-        } else {
-            System.err.println("Sound file not found in resources");
-        }
+        this.moveMedia = new Media(soundURL.toString());
+    }
+    public void setCaptureSound() {
+        URL soundURL = ChessFigureImpl.class.getResource("/sounds/shot-move.wav");
+        this.moveMedia = new Media(soundURL.toString());
     }
 
-    private static void makeMoveSound() {
+    private void makeMoveSound() {
         CompletableFuture.runAsync(() -> {
             Platform.runLater(() -> {
                 try {
@@ -136,5 +159,44 @@ public class ChessFigureImpl extends StackPane implements ChessFigure {
                 }
             });
         });
+    }
+
+    private void makeCaptureSound() {
+        setCaptureSound();
+        CompletableFuture.runAsync(() -> {
+            Platform.runLater(() -> {
+                try {
+                    // Stop current sound
+                    if (currentMediaPlayer != null) {
+                        currentMediaPlayer.stop();
+                        currentMediaPlayer.dispose();
+                    }
+
+                    // Play new sound
+                    if (moveMedia != null) {
+                        currentMediaPlayer = new MediaPlayer(moveMedia);
+                        currentMediaPlayer.setOnEndOfMedia(() -> {
+                            currentMediaPlayer.dispose();
+                            currentMediaPlayer = null;
+                        });
+                        currentMediaPlayer.play();
+                        setDefaultMoveSound();
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error playing sound: " + e.getMessage());
+                }
+            });
+        });
+    }
+
+    public boolean canCaptureAt(int x, int y) {
+        for (Node node : ApplicationStart.premovefigureGroup.getChildren()) {
+            if (node instanceof StackPane) {
+                if (node.getLayoutX() / TILE_SIZE == x && node.getLayoutY() / TILE_SIZE == y) {
+                    return node instanceof PreMoveSquare;
+                }
+            }
+        }
+        return false;
     }
 }

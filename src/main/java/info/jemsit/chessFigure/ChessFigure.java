@@ -6,5 +6,5 @@ public interface ChessFigure extends Moveable {
     FigureTypes getFigureType();
     int getXCoordinate();
     int getYCoordinate();
-    void capture();
+    void capture(int x, int y);
 }

@@ -32,7 +32,8 @@ public class RookPreMove extends PreMoveImpl {
                 if (!isValidMove(newX, newY)) break;
                 ChessFigureImpl chessFigure = ApplicationStart.hasFigureAt(newX, newY);
                 if (chessFigure != null) {
-                    if (chessFigure.isWhite != isWhite) {
+                    if (forKingSafety) super.addPreMoveToSafeKingMoves(newX, newY);
+                    else if (chessFigure.isWhite != isWhite) {
                         ApplicationStart.premovefigureGroup.getChildren().add(
                                 new PreMoveSquare(newX, newY, isWhite) // true,true → maybe premove flag
                         );

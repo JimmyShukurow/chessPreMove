@@ -33,7 +33,8 @@ public class BishopPreMove extends PreMoveImpl {
                 if (!isValidMove(newX, newY)) break;
                 ChessFigureImpl chessFigure = ApplicationStart.hasFigureAt(newX, newY);
                 if (chessFigure != null) {
-                    if (chessFigure.isWhite != this.isWhite) {
+                    if (forKingSafety) super.addPreMoveToSafeKingMoves(newX, newY);
+                    else if (chessFigure.isWhite != this.isWhite) {
                         ApplicationStart.premovefigureGroup.getChildren().add(
                                 new PreMoveSquare(newX, newY, isWhite)
                         );
