@@ -25,10 +25,6 @@ public class PreMoveSquareKingMove extends ChessFigureImpl {
         square.setStroke(Color.WHITE);
         square.setStrokeWidth(2);
 
-//        if (isWhite){
-//            circle.setFill(Color.color(0,1,0,0.3));
-//            circle.setStroke(Color.BLACK);
-//        }
         StackPane stack = new StackPane(square);
         stack.setPrefSize(ApplicationStart.TILE_SIZE, ApplicationStart.TILE_SIZE);
 

@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import java.io.File;
+import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 
 
@@ -96,13 +97,11 @@ public class SideBarComponent extends VBox {
     }
 
     private void startBackgroundSound() {
-        try {
-            File moveSound = new File("/home/jemsit/Desktop/JavaFXProjects/ChessTest/ChessPremove/src/main/resources/sounds/background-sound.wav");
-            if (moveSound.exists()) {
-                moveMedia = new Media(moveSound.toURI().toString());
-            }
-        } catch (Exception e) {
-            System.err.println("Error loading sound: " + e.getMessage());
+        URL soundURL = getClass().getResource("/sounds/background-sound.wav");
+        if (soundURL != null) {
+            moveMedia = new Media(soundURL.toString());
+        } else {
+            System.err.println("Sound file not found in resources");
         }
 
         CompletableFuture.runAsync(() -> {

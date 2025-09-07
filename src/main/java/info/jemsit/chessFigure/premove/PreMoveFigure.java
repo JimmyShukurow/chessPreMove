@@ -12,8 +12,6 @@ public class PreMoveFigure {
     private boolean isFirstMove;
     public boolean forKingSafetyCheck = false;
 
-
-
     public PreMoveFigure(ChessFigure figureType, boolean isWhite, boolean isFirstMove) {
         this.figureType = figureType;
         this.isWhite = isWhite;
@@ -39,7 +37,7 @@ public class PreMoveFigure {
             case BISHOP -> new BishopPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite, this.forKingSafetyCheck);
             case ROOK   -> new RookPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite, this.forKingSafetyCheck);
             case QUEEN  -> new QueenPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite, this.forKingSafetyCheck);
-            case KING   -> new KingPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite, this.forKingSafetyCheck);
+            case KING   -> new KingPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite,  this.forKingSafetyCheck);
             case PAWN   -> new PawnPreMove(figureType.getXCoordinate(), figureType.getYCoordinate(), isWhite, this.isFirstMove, this.forKingSafetyCheck);
         }
     }

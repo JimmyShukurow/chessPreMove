@@ -1,8 +1,8 @@
 package info.jemsit.chessFigure.premove.figures;
 
 import info.jemsit.ApplicationStart;
+import info.jemsit.Sides;
 import info.jemsit.chessFigure.ChessFigureImpl;
-import info.jemsit.chessFigure.FigureTypes;
 import info.jemsit.chessFigure.premove.PreMoveDot;
 import info.jemsit.chessFigure.premove.PreMoveFigure;
 import javafx.application.Platform;
@@ -15,11 +15,13 @@ public class KingPreMove extends PreMoveImpl {
     int[] kingXMovesDirect = {1, -1, 0, 0};
     int[] kingYMovesDirect = {0, 0, 1, -1};
 
-    public KingPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite, boolean forKingSafety) {
+    public KingPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite,  boolean forKingSafety) {
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;
         this.isWhite = isWhite;
-        fillPreMovesToCheckKingMove();
+        if (ApplicationStart.turn == Sides.WHITE && isWhite || ApplicationStart.turn == Sides.BLACK && !isWhite) {
+            fillPreMovesToCheckKingMove();
+        }
         Platform.runLater((this::addPreMoves));
         this.forKingSafety = forKingSafety;
     }
@@ -34,15 +36,13 @@ public class KingPreMove extends PreMoveImpl {
             newY += kingYMovesDiagonal[dir];
 
             //Straight axis
-            if (isValidMove(newX, newY) && ApplicationStart.hasFigureAt(newX, newY) == null && !isForbidden(newX, newY)) {
+            if (forKingSafety)super.addPreMoveToSafeKingMoves(newX, newY);
+            else if (isValidMove(newX, newY) && ApplicationStart.hasFigureAt(newX, newY) == null && !isForbidden(newX, newY)) {
                 ApplicationStart.premovefigureGroup.getChildren().add(
                         new PreMoveDot(newX, newY ,isWhite) // true,true → maybe premove flag
                 );
 
             }
-            if (forKingSafety)super.addPreMoveToSafeKingMoves(newX, newY);
-
-
             newX = currentXCoordinate;
             newY = currentYCoordinate;
 
@@ -50,14 +50,12 @@ public class KingPreMove extends PreMoveImpl {
             newY += kingYMovesDirect[dir];
 
             //Diagonal axis
-            if (isValidMove(newX, newY) && ApplicationStart.hasFigureAt(newX, newY) == null && isValidMove(newX,newY) && !isForbidden(newX, newY)) {
+            if (forKingSafety)super.addPreMoveToSafeKingMoves(newX, newY);
+            else if (isValidMove(newX, newY) && ApplicationStart.hasFigureAt(newX, newY) == null && isValidMove(newX,newY) && !isForbidden(newX, newY)) {
                 ApplicationStart.premovefigureGroup.getChildren().add(
                         new PreMoveDot(newX, newY,isWhite) // true,true → maybe premove flag
                 );
-
             }
-            if (forKingSafety)super.addPreMoveToSafeKingMoves(newX, newY);
-
         }
     }
 
@@ -68,7 +66,7 @@ public class KingPreMove extends PreMoveImpl {
 
     private void fillPreMovesToCheckKingMove() {
         for (Node node : ApplicationStart.figureGroup.getChildren()) {
-            if(((ChessFigureImpl) node).type != FigureTypes.KING && ((ChessFigureImpl) node).isWhite != this.isWhite) {
+            if(((ChessFigureImpl) node).isWhite != this.isWhite) {
                 var figure = (ChessFigureImpl) node;
                 PreMoveFigure preMoveThread = new  PreMoveFigure(true,figure, figure.isWhite);
                 preMoveThread.addPreMove();
@@ -79,7 +77,5 @@ public class KingPreMove extends PreMoveImpl {
     private boolean isForbidden(int x, int y) {
         return ApplicationStart.hasPreMoveFigureAtForKingSafety(x, y);
     }
-
-
 }
 

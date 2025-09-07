@@ -11,7 +11,6 @@ public class RookPreMove extends PreMoveImpl {
     int[] rookXMoves = {1, -1, 0, 0};
     int[] rookYMoves = {0, 0, 1, -1};
 
-
     public RookPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite, boolean forKingSafety) {
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;

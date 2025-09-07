@@ -13,7 +13,6 @@ public class QueenPreMove extends PreMoveImpl {
     int[] queenXMovesDirect = {1, -1, 0, 0};
     int[] queenYMovesDirect = {0, 0, 1, -1};
 
-
     public QueenPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite, boolean forKingSafety) {
         this.currentXCoordinate = currentXCoordinate;
         this.currentYCoordinate = currentYCoordinate;
@@ -69,7 +68,6 @@ public class QueenPreMove extends PreMoveImpl {
                     }
                     break;
                 }
-                ;
                 if (forKingSafety) {
                     super.addPreMoveToSafeKingMoves(newX, newY);
                 } else {

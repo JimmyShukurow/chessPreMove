@@ -8,11 +8,9 @@ import javafx.application.Platform;
 
 public class KnightPreMove extends PreMoveImpl {
 
-
     // Knight moves: (x, y) offsets
     int[] knightXMoves = {1, 1, 2, 2, -1, -1, -2, -2};
     int[] knightYMoves = {2, -2, 1, -1, 2, -2, 1, -1};
-
 
     public KnightPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite, boolean forKingSafety) {
         this.currentXCoordinate = currentXCoordinate;
@@ -29,13 +27,14 @@ public class KnightPreMove extends PreMoveImpl {
             int newY = currentYCoordinate + knightYMoves[i];
 
             //Just add dots to show where can move
-            if (isValidMove(newX, newY)) {
-                if (forKingSafety) super.addPreMoveToSafeKingMoves(newX, newY);
-                else ApplicationStart.premovefigureGroup.getChildren().add(new PreMoveDot(newX, newY, isWhite)); // Add pre-move knight figure
+            if (forKingSafety) super.addPreMoveToSafeKingMoves(newX, newY);
+            else if (isValidMove(newX, newY)) {
+                ApplicationStart.premovefigureGroup.getChildren().add(new PreMoveDot(newX, newY, isWhite)); // Add pre-move knight figure
             }
             //Target figure to capture
             ChessFigureImpl chessFigure = ApplicationStart.hasFigureAt(newX, newY);
-            if (chessFigure != null && chessFigure.isWhite != isWhite) {
+            if (forKingSafety) super.addPreMoveToSafeKingMoves(newX, newY);
+            else if (chessFigure != null && chessFigure.isWhite != isWhite) {
                 ApplicationStart.premovefigureGroup.getChildren().add(new PreMoveSquare(newX, newY, isWhite)); // Add pre-move knight figure
             }
         }

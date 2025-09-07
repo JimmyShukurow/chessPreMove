@@ -8,7 +8,6 @@ import javafx.application.Platform;
 
 public class BishopPreMove extends PreMoveImpl {
 
-
     // Diagonal directions: top-right, top-left, bottom-right, bottom-left
     int[] bishopXMoves = {1, 1, -1, -1};
     int[] bishopYMoves = {1, -1, 1, -1};
@@ -44,7 +43,6 @@ public class BishopPreMove extends PreMoveImpl {
                 if (forKingSafety) {
                     super.addPreMoveToSafeKingMoves(newX, newY);
                 } else {
-
                     ApplicationStart.premovefigureGroup.getChildren().add(
                             new PreMoveDot(newX, newY, isWhite)
                     );

@@ -13,6 +13,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 
 public class ChessFigureImpl extends StackPane implements ChessFigure {
@@ -53,6 +54,8 @@ public class ChessFigureImpl extends StackPane implements ChessFigure {
             snappedY = this.YCoordinate * ApplicationStart.TILE_SIZE;
         } else {
             makeMoveSound();
+            ApplicationStart.turn = isWhite ? Sides.BLACK : Sides.WHITE;
+            SideBarComponent.updateTurnDisplay();
         }
 
         TranslateTransition transition = new TranslateTransition(Duration.millis(50), this);
@@ -72,11 +75,7 @@ public class ChessFigureImpl extends StackPane implements ChessFigure {
         transition.play();
         this.XCoordinate = (int) (snappedX / ApplicationStart.TILE_SIZE);
         this.YCoordinate = (int) (snappedY / ApplicationStart.TILE_SIZE);
-
         PreMoveFigure.clearPreMove();
-        ApplicationStart.turn = isWhite ? Sides.BLACK : Sides.WHITE;
-        SideBarComponent.updateTurnDisplay();
-
     }
 
     @Override
@@ -95,18 +94,21 @@ public class ChessFigureImpl extends StackPane implements ChessFigure {
     }
 
     @Override
+    public void capture() {
+        System.out.println("I will capture this figure");
+    }
+
+    @Override
     public boolean canNotMoveTo(int x, int y) {
         return ApplicationStart.hasFigureAt(x, y) != null || !ApplicationStart.hasPreMoveFigureAt(x, y);
     }
 
     static {
-        try {
-            File moveSound = new File("/home/jemsit/Desktop/JavaFXProjects/ChessTest/ChessPremove/src/main/resources/sounds/kiss-move.wav");
-            if (moveSound.exists()) {
-                moveMedia = new Media(moveSound.toURI().toString());
-            }
-        } catch (Exception e) {
-            System.err.println("Error loading sound: " + e.getMessage());
+        URL soundURL = ChessFigureImpl.class.getResource("/sounds/kiss-move.wav");
+        if (soundURL != null) {
+            moveMedia = new Media(soundURL.toString());
+        } else {
+            System.err.println("Sound file not found in resources");
         }
     }
 

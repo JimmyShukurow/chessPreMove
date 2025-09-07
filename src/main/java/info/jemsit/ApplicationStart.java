@@ -31,9 +31,8 @@ public class ApplicationStart extends Application {
 
     public static Sides turn = Sides.WHITE;
 
-
-
-
+    public static boolean[] blackKingCanCastle = {true, true}; // {canCastleKingSide, canCastleQueenSide}
+    public static boolean[] whiteKingCanCastle = {true, true}; // {canCastleKingSide, canCastleQueenSide}
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -54,7 +53,6 @@ public class ApplicationStart extends Application {
         Scene scene = new Scene(root, SCENE_WIDTH + SIDE_BAR_WIDTH, SCENE_HEIGHT);
         stage.setTitle("Jimmy Chess Application");
         stage.setScene(scene);
-        startBackgroundSound();
         stage.show();
     }
 
@@ -74,7 +72,6 @@ public class ApplicationStart extends Application {
     }
 
     public static boolean hasPreMoveFigureAt(int x, int y) {
-
         for (Node node : ApplicationStart.premovefigureGroup.getChildren()) {
             if (node instanceof StackPane) {
                 if (node.getLayoutX() / TILE_SIZE == x && node.getLayoutY() / TILE_SIZE == y) {
@@ -124,11 +121,5 @@ public class ApplicationStart extends Application {
             figureGroup.getChildren().add(new PawnFigure(i, 6, true));
         }
     }
-
-    public void startBackgroundSound() {
-
-    }
-
-
 
 }

@@ -12,7 +12,6 @@ public class PawnPreMove extends PreMoveImpl {
     boolean isFirstMove;
     ChessFigureImpl chessFigure;
 
-
     public PawnPreMove(int currentXCoordinate, int currentYCoordinate, boolean isWhite, boolean isFirstMove, boolean forKingSafety) {
         this.chessFigure = ApplicationStart.hasFigureAt(currentXCoordinate, currentYCoordinate);
         this.currentXCoordinate = currentXCoordinate;
@@ -34,7 +33,6 @@ public class PawnPreMove extends PreMoveImpl {
     }
 
     private void add() {
-
         if (isWhite) currentYCoordinate--;
         else currentYCoordinate++;
 
@@ -43,7 +41,6 @@ public class PawnPreMove extends PreMoveImpl {
                     new PreMoveDot(currentXCoordinate, currentYCoordinate, isWhite)
             );
         }
-
     }
 
     @Override
@@ -66,7 +63,7 @@ public class PawnPreMove extends PreMoveImpl {
             );
         }
 
-        if(this.chessFigure.isWhite == isWhite && forKingSafety) {
+        if (this.chessFigure.isWhite == isWhite && forKingSafety) {
             super.addPreMoveToSafeKingMoves(currentXCoordinate + 1, currentYCoordinate);
             super.addPreMoveToSafeKingMoves(currentXCoordinate - 1, currentYCoordinate);
         }
